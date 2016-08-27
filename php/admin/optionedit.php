@@ -146,8 +146,7 @@ if(isset($_POST['submit']))
 
                                             <label>description <span class="error">*</span></label>
 
-                                            <input class="form-control" name="description" id="description" value="<?php echo $updateArray['description'];?>">
-
+                                            <textarea id="description"  name="description" value="<?php echo $updateArray['description'];?>" > <?php echo $updateArray['description'];?></textarea>
                                         </div>
                                          <div class="form-group">
 
