@@ -246,8 +246,48 @@
 	}
 
 	
+	var validate = function validate() {
+
+		var validate = '';
+		var customerName = $('#customer_name').val();
+		var customerEmail = $('#customer_email').val();
+		var customerContact = $('#customer_contact').val();
+		var customerMessage = $('#customer_message').val();
+
+		validate += ( customerName === '' ? '<p> Please enter customer name </p>' : '' );
+
+		validate += ( customerEmail === '' ? '<p> Please enter customer email </p>' : '' );
+
+		validate += ( customerContact === '' ? '<p> Please enter customer contact </p>' : '' );
+
+		validate += ( customerMessage === '' ? '<p> Please enter customer message </p>' : '' );
+
+		return validate;
+}
+	
+	
+	$('#stepOne').on("click",function() {
+		userForm.style.display = "";
+	});
+	
+	$("[name='otherStep']").on("click",function() {
+		userForm.style.display = "none";
+	});
+
 	//category click
-	$(".order-opt-link").on("click",function(){
+	$(".order-opt-link").on("click",function() {
+		
+		var userForm = document.getElementById("userForm");
+		
+		if (validate() !== '') {
+			userForm.style.display = "";
+			$("#errorDiv").html( validate() );
+			return;
+		} else {
+			//userForm.style.display = "none";
+			$("#errorDiv").html( validate() );
+		}
+		
 		reset_data();
 		$(".order-opt-link").removeClass("active");
 		$(this).addClass("active");

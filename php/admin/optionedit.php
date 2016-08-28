@@ -6,9 +6,9 @@ if(isset($_GET['id']))
 
 {
 
-	$id=base64_decode($_GET['id']);
+    $id=base64_decode($_GET['id']);
 
-	$option=$optObj->getOptionById($id);
+    $option=$optObj->getOptionById($id);
 
 }
 
@@ -16,7 +16,7 @@ else
 
 {
 
-	header("location:optionlist.php");
+    header("location:optionlist.php");
 
 }
 
@@ -26,34 +26,55 @@ $errMsg="";$succMsg="";$err=0;
 
 
 
-	$updateArray['optionname']=isset($_POST['name'])?cleanInputField($_POST['name']):$option[0]['optionname'];
+    $updateArray['optionname']=isset($_POST['name'])?cleanInputField($_POST['name']):$option[0]['optionname'];
 
-	$updateArray['optionPrice']=isset($_POST['price'])?cleanInputField($_POST['price']):$option[0]['optionPrice'];
+    $updateArray['optionPrice']=isset($_POST['price'])?cleanInputField($_POST['price']):$option[0]['optionPrice'];
 
     $updateArray['productImage']=isset($_POST['productImage'])?cleanInputField($_POST['productImage']):$option[0]['productImage'];
 
     $updateArray['description']=isset($_POST['description'])?cleanInputField($_POST['description']):$option[0]['description'];
-	
 
 if(isset($_POST['submit']))
 
 {
 
-	if($updateArray['optionname']==""){
+    $image = isset($_FILES['image']['name'])?cleanInputField($_FILES['image']['name']):'';
+    
+    if($updateArray['optionname']==""){
 
-		$errMsg="Please enter all mandatory fields";
+        $errMsg="Please enter all mandatory fields";
 
-	}
+    }
+    
+    if ($image) {
+        
+        $type= $_FILES['image']['type'];
 
-	else
+        $ext = strtolower(substr(strrchr($_FILES['image']['name'], "."), 1));
 
-	{
+        $updateArray['productImage']="prod_".date('dmyhis').$_FILES['image']['name'];
 
-		$ins=$optObj->updateOptionById($updateArray,$id);
+        $move=move_uploaded_file ($_FILES['image']['tmp_name'],'../public/uploads/products/'.$updateArray['productImage']);
 
-		$succMsg="Data updated successfully";
+        if($move=="")
 
-	}
+        {
+            echo 'error';
+            $err=1;
+
+            $errMsg="Failed to upload image";
+        }
+    }
+
+    else
+
+    {
+
+        $ins=$optObj->updateOptionById($updateArray,$id);
+
+        $succMsg="Data updated successfully";
+
+    }
 
 }
 
@@ -138,7 +159,11 @@ if(isset($_POST['submit']))
 
                                             <label>Image <span class="error">*</span></label>
 
-                                                 <img src="../public/uploads/products/<?php echo $updateArray['productImage'];?>" width="50" height="50">
+                                                 <img src="../public/uploads/products/<?php echo $updateArray['productImage'];?>" width="100" height="100">
+
+                                                 <br>
+
+                                                 <input type="file" name="image" id="image" / >
 
                                         </div>
 
@@ -146,7 +171,8 @@ if(isset($_POST['submit']))
 
                                             <label>description <span class="error">*</span></label>
 
-                                            <textarea id="description"  name="description" value="<?php echo $updateArray['description'];?>" > <?php echo $updateArray['description'];?></textarea>
+                                            <textarea id="description"  name="description"  > <?php echo $updateArray['description'];?></textarea>
+
                                         </div>
                                          <div class="form-group">
 
