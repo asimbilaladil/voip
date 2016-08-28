@@ -138,7 +138,7 @@ include("settings.php");
          <div class="order-btns clearfix">
 
               <div class="col-md-4">
-                         <a onclick="showForm()" class="order-opt-link active" id="22">
+                         <a class="order-opt-link active" id="stepOne">
 
                          <span class="icon">
                        
@@ -165,7 +165,7 @@ include("settings.php");
                     ?>
 
                      <div class="col-md-4">
-                     <a onclick="hideForm()" class="order-opt-link" id="<?php echo $category['idCategory']?>">
+                     <a  class="order-opt-link" name="otherStep" id="<?php echo $category['idCategory']?>">
 
                      <span class="icon">
                    
@@ -390,11 +390,13 @@ include("settings.php");
                                         ?>
 
                                         <li class="opns" data-pdctid="<?php echo $option['idProduct']?>">
-
                                        <input type="checkbox" id="dyn_menus_<?php echo $option['idOption'];?>" data-pdct="<?php echo $option['idProduct']?>" value="<?php echo $optiondetails['optionname'];?> <span>[<?php echo $currency.$optiondetails['optionPrice'];?>]</span>" name="html_options[]" class="check-opt" data="<?php echo $optiondetails['optionname'];?>" data-cost2="<?php echo number_format($optiondetails['optionPrice'],2);?>">
+                                       <img src="public/uploads/products/<?php echo $optiondetails['productImage'] ?>" width="50px" />
                                        <?php echo $optiondetails['optionname'];?> 
                                        <?php if($show_price==1){?>
                                        <span>[<?php echo $currency.$optiondetails['optionPrice'];?>]</span>
+                                         
+
                                         <?php } ?>
                                     </li> 
 
@@ -418,12 +420,22 @@ include("settings.php");
                                 ?>
                             <!-- Additional Options End -->
 
-                            
+                                               <div class="addi-opts" id="description" style="display: none;">
+
+
+                                   
+
+                                
+
+                            </div> 
 
                             <!-- Form Start -->
 
-                            <div class="submit-opts-form clearfix"  id="userForm" >
 
+
+                            <div class="submit-opts-form clearfix"  id="userForm" >
+                            <div id="errorDiv">
+                            </div>
                              <div class="controls" id="error_order" style="color:red;"></div>
                              <label style="padding: 5px 15px; margin: 0 0 15px 0; text-align: right; font-family: 'Open Sans', sans-serif; font-size: 14px; height: 35px; width: 32%; float: left;">Select State:</label>
                                     <select   name="customer_state" class="second-field">
@@ -452,13 +464,13 @@ include("settings.php");
                                     <input type="text" name="innerpage_cost" style="display: none;"/>   
 
 
-                                    <input type="text" placeholder="Your Name *"  name="customer_name" class="first-field">
+                                    <input type="text" placeholder="Your Name *" id="customer_name"  name="customer_name" class="first-field">
 
-                                    <input type="text" placeholder="Your Email *" name="customer_email" class="second-field">
+                                    <input type="text" placeholder="Your Email *" id="customer_email" name="customer_email" class="second-field">
 
-                                    <input type="text" placeholder="Your Phone" name="customer_contact"  class="third-field">
+                                    <input type="text" placeholder="Your Phone" id="customer_contact" name="customer_contact"  class="third-field">
 
-                                    <textarea cols="10" rows="5" name="customer_message" placeholder="Description *" class="forth-field"></textarea>
+                                    <textarea cols="10" rows="5" name="customer_message" placeholder="Description *" id="customer_message" class="forth-field"></textarea>
                                     <input type="hidden" id="no_prod" name="no_prod" value="0">
                                 </div>  
 
@@ -672,13 +684,8 @@ include("settings.php");
 
     <script type="text/javascript">
         
-        var userForm = document.getElementById("userForm");
-        var showForm = function showForm () {
-            userForm.style.display = "";
-        }
-        var hideForm = function hideForm () {
-            userForm.style.display = "none";
-        }
+
+
     </script>
 
 </body>
