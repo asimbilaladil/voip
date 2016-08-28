@@ -38,7 +38,7 @@ if(isset($_POST['submit']))
 
 {
 
-    $image = isset($_FILES['image']['name'])?cleanInputField($_FILES['image']['name']):'';
+    
     
     if($updateArray['optionname']==""){
 
@@ -46,30 +46,34 @@ if(isset($_POST['submit']))
 
     }
     
-    if ($image) {
-        
-        $type= $_FILES['image']['type'];
 
-        $ext = strtolower(substr(strrchr($_FILES['image']['name'], "."), 1));
-
-        $updateArray['productImage']="prod_".date('dmyhis').$_FILES['image']['name'];
-
-        $move=move_uploaded_file ($_FILES['image']['tmp_name'],'../public/uploads/products/'.$updateArray['productImage']);
-
-        if($move=="")
-
-        {
-            echo 'error';
-            $err=1;
-
-            $errMsg="Failed to upload image";
-        }
-    }
 
     else
 
     {
+        
+        $image = isset($_FILES['image']['name'])?cleanInputField($_FILES['image']['name']):'';
+      
+        if ($image) {
 
+            $type= $_FILES['image']['type'];
+
+            $ext = strtolower(substr(strrchr($_FILES['image']['name'], "."), 1));
+
+            $updateArray['productImage']="prod_".date('dmyhis').$_FILES['image']['name'];
+
+            $move=move_uploaded_file ($_FILES['image']['tmp_name'],'../public/uploads/products/'.$updateArray['productImage']);
+
+            if($move=="")
+
+            {
+                echo 'error';
+                $err=1;
+
+                $errMsg="Failed to upload image";
+            }
+        }
+      
         $ins=$optObj->updateOptionById($updateArray,$id);
 
         $succMsg="Data updated successfully";
