@@ -249,28 +249,37 @@
 	var validate = function validate() {
 
 		var validate = '';
-		var customerName = $('#customer_name').val();
-		var customerEmail = $('#customer_email').val();
-		var customerContact = $('#customer_contact').val();
-		var customerMessage = $('#customer_message').val();
+		var firstname = $('#firstname').val();
+		var lastname = $('#lastname').val();
+		var email = $('#email').val();
+		var phone = $('#phone').val();
+		var company = $('#company').val();
+		var employee = $('#employee').val();
 
-		validate += ( customerName === '' ? '<p> Please enter customer name </p>' : '' );
+		validate += ( firstname === '' ? '<p> Please enter first name </p>' : '' );
 
-		validate += ( customerEmail === '' ? '<p> Please enter customer email </p>' : '' );
+		validate += ( lastname === '' ? '<p> Please enter last name </p>' : '' );
 
-		validate += ( customerContact === '' ? '<p> Please enter customer contact </p>' : '' );
+		validate += ( email === '' ? '<p> Please enter email </p>' : '' );
 
-		validate += ( customerMessage === '' ? '<p> Please enter customer message </p>' : '' );
+		validate += ( phone === '' ? '<p> Please enter phone  </p>' : '' );
+		
+		validate += ( company === '' ? '<p> Please enter company  </p>' : '' );
+		
+		validate += ( employee === '' ? '<p> Please enter employee  </p>' : '' );
 
 		return validate;
+
 }
 	
 	
 	$('#stepOne').on("click",function() {
+		$('#description').css("display","none");
 		userForm.style.display = "";
 	});
 	
 	$("[name='otherStep']").on("click",function() {
+		$('#description').css("display","");
 		userForm.style.display = "none";
 	});
 
