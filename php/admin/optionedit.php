@@ -175,7 +175,7 @@ if(isset($_POST['submit']))
 
                                             <label>description <span class="error">*</span></label>
 
-                                            <textarea id="description"  name="description"  > <?php echo $updateArray['description'];?></textarea>
+                                            <textarea rows="20" cols="70" class="ckeditor" id="description" name="description" ><?php echo $updateArray['description'];?></textarea>
 
                                         </div>
                                          <div class="form-group">

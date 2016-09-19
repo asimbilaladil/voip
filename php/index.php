@@ -50,6 +50,17 @@ include("settings.php");
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
 
+        <!-- Slider files -->
+        <link rel="stylesheet" type="text/css" href="css/slide.css">
+
+        <!-- Slider files -->
+        <link rel="stylesheet" type="text/css" href="css/jcarousel.responsive.css">
+
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery.jcarousel.min.js"></script>
+
+        <script type="text/javascript" src="js/jcarousel.responsive.js"></script>
+
 </head>
 
 
@@ -365,9 +376,9 @@ include("settings.php");
                              <?php
 
                                 if(!empty($productoptions))
-
+          
                                 {
-
+                                  $count = 0;
                                     ?>
                             <div class="addi-opts" id="add_options">
 
@@ -380,32 +391,46 @@ include("settings.php");
                                     <ul class="list-opt clearfix">
 
                                     <?php
-
+                                    $phoneArray = [];
+                            
+                 
                                     foreach($productoptions as $option)
 
                                     {
+                                       
+                                        if( !in_array($option['idProduct'], $phoneArray )  ){
+                                               array_push($phoneArray, $option['idProduct']);
+                                               $flag = true; 
+                                        } else {
+                                            $flag = false;
+                                        }
+                                        if($flag ) {
 
+
+                                    $count++;
                                     $optiondetails=$obj->getProductOptionsById($option['idOption']);
 
                                         ?>
-
+                                  
                                         <li class="opns" data-pdctid="<?php echo $option['idProduct']?>">
-                                       <input type="checkbox" id="dyn_menus_<?php echo $option['idOption'];?>" data-pdct="<?php echo $option['idProduct']?>" value="<?php echo $optiondetails['optionname'];?> <span>[<?php echo $currency.$optiondetails['optionPrice'];?>]</span>" name="html_options[]" class="check-opt" data="<?php echo $optiondetails['optionname'];?>" data-cost2="<?php echo number_format($optiondetails['optionPrice'],2);?>">
-                                       <img src="public/uploads/products/<?php echo $optiondetails['productImage'] ?>" width="50px" />
-                                       <?php echo $optiondetails['optionname'];?> 
+
+                                       <img src="public/uploads/products/<?php echo $optiondetails['productImage'] ?>" width="200px" />
+                                       <input onchange="showDescription(this, '<?php echo $optiondetails['description'] ?>' )" name="options"  type="checkbox" id="dyn_menus_<?php echo $option['idOption'];?>" data-pdct="<?php echo $option['idProduct']?>" value="<?php echo $optiondetails['optionname'];?>  
+                                       <span>[<?php echo $currency.$optiondetails['optionPrice'];?>]</span>"
+                                              name="html_options[]" class="check-opt" data="<?php echo $optiondetails['optionname'];?>" data-cost2="<?php echo number_format($optiondetails['optionPrice'],2);?>" />
+                                          <?php echo $optiondetails['optionname'];?> 
                                        <?php if($show_price==1){?>
                                        <span>[<?php echo $currency.$optiondetails['optionPrice'];?>]</span>
-                                         
-
-                                        <?php } ?>
+                                       
+                                        <?php }   ?>
                                     </li> 
 
                                         <?php
 
                                     }
-
+}
                                     ?>
-
+<button onClick= "makeEmpty()" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Change Phone</button>
                                    </ul>
 
                                    
@@ -420,15 +445,65 @@ include("settings.php");
                                 ?>
                             <!-- Additional Options End -->
 
-                                               <div class="addi-opts" id="description" style="display: none;">
+                           <div class="addi-opts" id="description" style="display: none;">
 
-
-                                   
-
-                                
-
+                            
                             </div> 
 
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Phone Options</h4>
+      </div>
+      <div class="modal-body">
+        <div class="jcarousel-wrapper">
+                <div class="jcarousel">
+                    <ul>
+                               <?php
+                                   
+                                    foreach($productoptions as $option)
+
+                                    {
+                                    $count++;
+                                    $optiondetails=$obj->getProductOptionsById($option['idOption']);
+
+                                        ?>
+                        <li onClick= "writeDescription(<?php echo $option['idOption'];?>)"  class="opns" data-pdctid="<?php echo $option['idProduct']?>" >
+                        <input type="hidden" id="des_<?php echo $option['idOption'];?>" value="<?php echo $optiondetails['description'] ?>" />
+                        <img src="public/uploads/products/<?php echo $optiondetails['productImage'] ?>"/>
+                                <?php if($show_price==1){?>
+                                       <span>[<?php echo $currency.$optiondetails['optionPrice'];?>]</span>
+                                       
+                                        <?php } ?>   </li> 
+
+                                        <?php
+
+                                    }
+
+                                    ?>
+         
+                    </ul>
+                </div>
+
+                <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+                <a href="#" class="jcarousel-control-next">&rsaquo;</a>
+
+
+            </div>
+            <div id="phoneDescription"  class="modal-body"> </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
                             <!-- Form Start -->
 
 
@@ -464,14 +539,16 @@ include("settings.php");
                                     <input type="text" name="innerpage_cost" style="display: none;"/>   
 
 
-                                    <input type="text" placeholder="Your Name *" id="customer_name"  name="customer_name" class="first-field">
+                                    <input type="text" placeholder="Your first Name *" id="firstname" value="0"  name="firstname" class="first-field">
 
-                                    <input type="text" placeholder="Your Email *" id="customer_email" name="customer_email" class="second-field">
+                                    <input type="text" placeholder="Your Last Name*" id="lastname" name="lastname" value="0" class="second-field">
 
-                                    <input type="text" placeholder="Your Phone" id="customer_contact" name="customer_contact"  class="third-field">
-
-                                    <textarea cols="10" rows="5" name="customer_message" placeholder="Description *" id="customer_message" class="forth-field"></textarea>
-                                    <input type="hidden" id="no_prod" name="no_prod" value="0">
+                                    <input type="text" placeholder="Your Email" id="email" name="email" value="0" class="third-field">
+                                    <input type="text" placeholder="Your Mobile Phone" id="phone" name="phone" value="0" class="first-field">
+                                  <input type="text" placeholder="Your Company" id="company" name="company" value="0" class="second-field">
+                                 
+                                    <input type="number" placeholder="No Of Employee" id="employee" name="employee"  class="third-field" value="0" >
+                                  <input type="hidden" id="no_prod" name="no_prod" value="0">
                                 </div>  
 
                                 <!-- Order Concept Area Start -->                           
@@ -587,7 +664,7 @@ include("settings.php");
 
                         <div class="summary-basic-pack">
 
-                            <h5>Extra Options</h5>
+                            <h5>Phone Options</h5>
 
                             <ul class="pack-add" id="pack-add">
 
@@ -684,8 +761,33 @@ include("settings.php");
 
     <script type="text/javascript">
         
+      
+   $("input:checkbox").change(function(){
+   var group = ":checkbox[name='"+ $(this).attr("name") + "']";
+     if($(this).is(':checked')){
+       $(group).not($(this)).attr("checked",false);
+     }
+   });      
+      
+      
+    var showDescription = function showDescription(cb, description) {
+      if(cb.checked == true) {
+        $('#description').html(description);
+      } else {
+        
+        
+      }
+    }
+    var writeDescription = function ( id ) {
 
+        var domID = 'des_'+id;
+        var description  = document.getElementById(domID).value;
+        $('#phoneDescription').html(description);
 
+    }
+    var makeEmpty = function () {
+         $('#phoneDescription').html("");
+    }
     </script>
 
 </body>

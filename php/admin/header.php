@@ -13,6 +13,7 @@ include('settings.php');
 <head>
 
 
+  <script src="//cdn.ckeditor.com/4.5.10/standard/ckeditor.js"></script>
 
     <meta charset="utf-8">
 
@@ -78,8 +79,7 @@ include('settings.php');
 
     <![endif]-->
 
-            <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-            <script>tinymce.init({ selector:'textarea' });</script>
+
 
 </head>
 

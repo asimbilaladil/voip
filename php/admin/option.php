@@ -13,7 +13,7 @@ $errMsg="";$succMsg="";$err=0;
 	$insertArray['optionPrice']=isset($_POST['price'])?cleanInputField($_POST['price']):0;
 
 
-    $insertArray['description']=isset($_POST['description'])?cleanInputField($_POST['description']):'';
+    $insertArray['description']=isset($_POST['description'])? $_POST['description'] :'';
     
 
     
@@ -159,9 +159,7 @@ if(isset($_POST['submit']))
 
                                             <label>description <span class="error">*</span></label>
 
-                                             <textarea id="description"  name="description" value="<?php echo $insertArray['desciption'];?>" ></textarea>
-
-
+																						<textarea rows="20" cols="70" class="ckeditor" id="description" name="description" ></textarea>
                                         </div>
                                          <div class="form-group">
 
